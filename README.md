@@ -28,7 +28,7 @@ or:
 
 Please see [contributing guidelines](https://github.com/archivesunleashed/au_notebook/blob/master/CONTRIBUTING.md) for details.
 * [Bug reports](https://github.com/archivesunleashed/au_notebook/issues)
-* [Pull requests](https://github.com/archivesunleashed/au_notebook/pulls) are welcome on AUK
+* [Pull requests](https://github.com/archivesunleashed/au_notebook/pulls) are welcome on `au_notebook`
 
 ## License
 
