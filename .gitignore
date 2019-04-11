@@ -1,3 +1,5 @@
 au_notebook.egg-info
 build
 dist
+.coverage
+__pycache__
