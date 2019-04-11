@@ -13,7 +13,7 @@ setup(
     url = 'https://github.com/archivesunleashed/au_notebook',
     install_requires=['matplotlib', 'networkx', 'nltk', 'numpy', 'pandas', ],
     author = 'Ryan Deschamps, Nick Ruest',
-    author_email = 'mjordan@sfu.ca, ruestn@gmail.com',
+    author_email = 'ryan.deschamps@gmail.com, ruestn@gmail.com',
     license = 'Apache 2.0',
     py_modules = ['au_notebook'],
     scripts = ['au_notebook.py'],
@@ -23,7 +23,7 @@ setup(
     platforms = ['POSIX'],
     test_suite = 'test',
     classifiers = [
-      'License :: Apache 2.0',
+      'License :: OSI Approved :: Apache Software License',
       'Intended Audience :: Developers',
       'Topic :: Software Development :: Libraries :: Python Modules',
       'Topic :: Utilities',
