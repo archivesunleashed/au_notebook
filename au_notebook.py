@@ -14,10 +14,9 @@ from nltk.sentiment.util import *
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 
-
-class AuNotebook():
+class au_notebook():
     """
-    Auk notebook helper functions.
+    Archives Unleashed Notebook helper functions.
     """
 
     # Maximum number of words to show in output.
