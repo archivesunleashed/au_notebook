@@ -18,6 +18,7 @@ setup(
     py_modules = ['au_notebook'],
     scripts = ['au_notebook.py'],
     description = description,
+    long_description_content_type='text/markdown',
     long_description = open('README.md').read(),
     package_data = { '': ['README.md'] },
     platforms = ['POSIX'],
