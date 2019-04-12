@@ -5,16 +5,13 @@ For more information, please visit https://archivesunleashed.org/.
 """
 
 from collections import Counter
-from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.draw.dispersion import dispersion_plot as dp
-from nltk.classify import NaiveBayesClassifier
-from nltk.corpus import subjectivity
-from nltk.sentiment import SentimentAnalyzer
-from nltk.sentiment.util import *
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.corpus import stopwords
 
-class au_notebook():
+from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+
+class au_notebook:
     """
     Archives Unleashed Notebook helper functions.
     """
@@ -31,7 +28,7 @@ class au_notebook():
     minimum_word_length = 3  # Eliminates "it", "I", "be" etc.
 
     # List of substrings to filter a text line, if desired.
-    line_filter = ['404 Not Found']
+    line_filter = ["404 Not Found"]
 
     # How many lines of text to use.
     results_limit = 1000
@@ -64,7 +61,7 @@ class au_notebook():
 
     # List of words not to include in a corpus for text analysis. Added to
     # nltk stop words if use_nltk is True.
-    stop_words_user = ('north', 'south')
+    stop_words_user = ("north", "south")
 
     # Will include nltk stop words if use_nltk is True, otherwise just user
     # selected stop words.
@@ -72,7 +69,7 @@ class au_notebook():
 
     # Collection ID.
     collection = "4867"  # Default collection for auk-notebooks.
-    auk_fp = './data/'
+    auk_fp = "./data/"
     auk_full_text = ""
     auk_gephi = ""
     auk_graphml = ""
@@ -89,10 +86,14 @@ class au_notebook():
         self.auk_gephi = self.auk_fp + self.collection + "-gephi.gexf"
         self.auk_graphml = self.auk_fp + self.collection + "-gephi.graphml"
         self.auk_domains = self.auk_fp + self.collection + "-fullurls.txt"
-        self.auk_filtered_text = self.auk_fp \
-            + self.collection + "-filtered_text.zip"
-        self.stop_words = set(stopwords.words('english')).union(
-            self.stop_words_user) if self.use_nltk else self.stop_words_user
+        self.auk_filtered_text = (self.auk_fp +
+                                  self.collection +
+                                  "-filtered_text.zip")
+        self.stop_words = (
+            set(stopwords.words("english")).union(self.stop_words_user)
+            if self.use_nltk
+            else self.stop_words_user
+        )
 
     def clean_domain(self, s):
         """Extracts the name from the domain (e.g. 'www.google.com' becomes
@@ -124,18 +125,18 @@ class au_notebook():
         scores = Counter()
         with open(self.auk_domains) as fin:
             for line in fin:
-                ret.append(line.strip('()\n').split(","))
-        if split_method == 'name':
+                ret.append(line.strip("()\n").split(","))
+        if split_method == "name":
             for url, count in ret:
                 scores.update({clean(url): int(count)})
             ret = scores
-        elif split_method == 'sub':
-            splits = [(x[0].split('.'), int(x[1])) for x in ret]
+        elif split_method == "sub":
+            splits = [(x[0].split("."), int(x[1])) for x in ret]
             for url, count in splits:
                 if len(url) < 3:
-                    scores.update({'.'.join(['www', url[0]]): count})
+                    scores.update({".".join(["www", url[0]]): count})
                 else:
-                    scores.update({'.'.join([url[0], url[1]]): count})
+                    scores.update({".".join([url[0], url[1]]): count})
             ret = scores
         else:
             for url, count in ret:
@@ -158,15 +159,17 @@ class au_notebook():
                 if num in form:
                     line = next(fin)
                     split_line = str(line).split(",", 3)
-                    line_filter = set(
-                        [split_line[3].find(x) for x in self.line_filter])
-                    if (len(split_line[3]) >= self.minimum_word_length and
-                            line_filter == {-1}):
+                    line_filter = set([split_line[3].find(x)
+                                       for x in self.line_filter])
+                    if len(
+                        split_line[3]
+                    ) >= self.minimum_word_length and line_filter == {-1}:
                         # Too short and filtered strings removed.
                         if by == "domain":
-                            text.append((
-                                self.clean_domain(split_line[1]),
-                                split_line[3]))
+                            text.append(
+                                (self.clean_domain(split_line[1]),
+                                 split_line[3])
+                            )
                         elif by == "year":
                             text.append((split_line[0][1:5], split_line[3]))
                         else:
@@ -182,8 +185,11 @@ class au_notebook():
             list of words.
         :return: A list of words included in the text file.
         """
-        return [x.lower() for x in word_tokenize(' '.join(self.get_text()))
-                if len(x) > self.minimum_word_length]
+        return [
+            x.lower()
+            for x in word_tokenize(" ".join(self.get_text()))
+            if len(x) > self.minimum_word_length
+        ]
 
     def get_tokens_domains(self):
         """Get tokens by domain.
@@ -192,9 +198,19 @@ class au_notebook():
             list of words.
         :return: A list of tuples with (domain, Counter).
         """
-        return [(x[0], Counter([y for y in word_tokenize(x[1])
-                if len(y) > self.minimum_word_length]))
-                for x in self.get_text("domain")]
+        return [
+            (
+                x[0],
+                Counter(
+                    [
+                        y
+                        for y in word_tokenize(x[1])
+                        if len(y) > self.minimum_word_length
+                    ]
+                ),
+            )
+            for x in self.get_text("domain")
+        ]
 
     def get_tokens_years(self):
         """Get tokens by year.
@@ -203,9 +219,19 @@ class au_notebook():
             list of words.
         :return: A list of tuples with (year, Counter).
         """
-        return [(x[0], Counter([y for y in word_tokenize(x[1])
-                if len(y) > self.minimum_word_length]))
-                for x in self.get_text("year")]
+        return [
+            (
+                x[0],
+                Counter(
+                    [
+                        y
+                        for y in word_tokenize(x[1])
+                        if len(y) > self.minimum_word_length
+                    ]
+                ),
+            )
+            for x in self.get_text("year")
+        ]
 
     def year(self):
         """Used by get_top_tokens_by to get the tokens by year."""
@@ -217,8 +243,12 @@ class au_notebook():
 
     def get_top_tokens(self):
         """Return the top tokens for the text."""
-        return [(key, value) for key, value in Counter(
-                     self.get_text_tokens()).most_common(self.top_count)]
+        return [
+            (key, value)
+            for key, value in Counter(self.get_text_tokens()).most_common(
+                self.top_count
+            )
+        ]
 
     def get_top_tokens_by(self, fun):
         """ Get the top tokens by a function.
@@ -234,9 +264,10 @@ class au_notebook():
         sep = {k[0]: Counter() for k in tokens}
         for key, value in tokens:
             sep[key] += value
-        ret = [(key, val.most_common(self.top_count))
-               for key, val in sep.items()]
-        return (ret)
+        ret = [(key,
+                val.most_common(self.top_count)) for key,
+               val in sep.items()]
+        return ret
 
     def international(self, text):
         """Applies UTF-16 if possible.
@@ -292,12 +323,17 @@ class au_notebook():
             scores = Counter({"neg": 0, "pos": 0, "neu": 0, "compound": 0})
             for c in b:
                 scores.update(sid.polarity_scores(c))
-            result += [(a,
-                       ("neg", scores['neg']/len(b)),
-                       ("pos", scores['neg']/len(b)),
-                       ("neu", scores['neu']/len(b)),
-                       ("compound", scores['compound']/len(b)))]
-        return(result)
+            result += [
+                (
+                    a,
+                    ("neg", scores["neg"] / len(b)),
+                    ("pos", scores["neg"] / len(b)),
+                    ("neu", scores["neu"] / len(b)),
+                    ("compound", scores["compound"] / len(b)),
+                )
+            ]
+        return result
+
 
 if __name__ == "__main__":
     pass
