@@ -9,13 +9,13 @@ description = \
 
 setup(
     name='au_notebook',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/archivesunleashed/au_notebook',
     install_requires=['matplotlib', 'networkx', 'nltk', 'numpy', 'pandas'],
     author='Ryan Deschamps, Nick Ruest',
     author_email='ryan.deschamps@gmail.com, ruestn@gmail.com',
     license='Apache 2.0',
-    pcy_modules=['au_notebook'],
+    py_modules=['au_notebook'],
     scripts=['au_notebook.py'],
     description=description,
     long_description_content_type='text/markdown',
