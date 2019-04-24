@@ -299,10 +299,10 @@ class au_notebook:
         :return: None.
         """
         try:
-            with open(filename, "w") as output:
+            with open(stdout, "w") as output:
                 for value in results:
-                    output_file_write(str(value))
-        except:
+                    output.write(str(value))
+        except Exception as exp:
             print("Error writing the file.")
 
     def sentiment_scores(self, by="domain"):
